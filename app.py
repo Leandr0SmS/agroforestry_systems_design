@@ -34,35 +34,74 @@ def get_canteiro():
     """
     logger.debug(f"Criando Canteiro")
     
+    canteiro_data = {
+        "plantas": [
+            {
+              "espacamento": 200,
+              "estrato": "emergente",
+              "nome_planta": "Embaúba",
+              "sombra": 20,
+              "tempo_colheita": 1095
+            },
+            {
+              "espacamento": 100,
+              "estrato": "alto",
+              "nome_planta": "Jucara",
+              "sombra": 40,
+              "tempo_colheita": 2555
+            },
+            {
+              "espacamento": 50,
+              "estrato": "medio",
+              "nome_planta": "Pimenta-do-reino",
+              "sombra": 60,
+              "tempo_colheita": 1460
+            },
+            {
+              "espacamento": 40,
+              "estrato": "baixo",
+              "nome_planta": "Abacaxi",
+              "sombra": 80,
+              "tempo_colheita": 730
+            }
+        ]
+    }
+    
     #try: 
-    np.random.seed(100)
-    N = 10
-    x=[50, 150, 250, 350, 450]
-    y=[50, 50, 50, 50, 50]
-    colors = np.random.rand(N)
-    sz = [100, 100, 100, 100, 100]
+    fig = go.Figure()
+    
     range_x=[0, 500]
     range_y=[0,100]
-    
     # Calculate sizeref dynamically based on the plot dimensions
     plot_width = range_x[1] - range_x[0]
     plot_height = range_y[1] - range_y[0]
     sizeref = 2.0 * max(plot_width, plot_height) / (100 ** 2)  # Adjust the denominator for scaling
     
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=x,
-        y=y,
-        mode="markers",
-        marker=go.scatter.Marker(
-            size=sz,
-            sizemode="diameter",
-            sizeref=1,
-            color=colors,
-            opacity=0.6,
-            colorscale="Viridis"
-        )
-    ))
+    np.random.seed(100)
+    N = len(canteiro_data["plantas"])
+    colors = np.random.rand(N)
+        
+    x=[]
+    y=[]
+    sz = []
+    
+    for planta in canteiro_data["plantas"]:
+
+        fig.add_trace(go.Scatter(
+            x=x,
+            y=y,
+            mode="markers",
+            marker=go.scatter.Marker(
+                size=sz,
+                sizemode="diameter",
+                sizeref=1,
+                color=colors,
+                opacity=0.6,
+                colorscale="Viridis"
+            )
+        ))
+        
+    # Configuração Eixos
     fig.update_xaxes(
         type="linear",
         range=range_x
@@ -77,6 +116,7 @@ def get_canteiro():
             sizeref=1
         )
     )
+    
     fig.show()
     
      # Extract only the data and layout
