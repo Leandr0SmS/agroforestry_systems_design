@@ -7,8 +7,6 @@ class CanteiroSchema(BaseModel):
     """ Define como um novo canteiro deve ser representado
     """
     nome_canteiro: str = "Canteiro1"
-    svg_canteiro: str = "<svg xmlns=\"http://www.w3.org/2000/svg\" ... </svg>"
- 
     
 class CanteiroBuscaSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será
@@ -22,7 +20,6 @@ class CanteiroViewSchema(BaseModel):
     """
     id_cantiero: int = 1
     nome_canteiro: str = "Canteiro1"
-    svg_canteiro: str = "<svg xmlns=\"http://www.w3.org/2000/svg\" ... </svg>"
 
 
 # class PlantaDelSchema(BaseModel):
@@ -53,6 +50,5 @@ def apresenta_canteiro(canteiro: Canteiro):
     """
     return {
         "nome_canteiro": canteiro.nome_canteiro,
-        "svg_canteiro": canteiro.svg_canteiro
     }
 

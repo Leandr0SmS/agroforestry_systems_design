@@ -12,5 +12,3 @@ SQLAlchemy
 SQLAlchemy-Utils
 plotly
 logger
-numpy
-math

@@ -68,74 +68,13 @@ def get_canteiro():
     }
     
     #try: 
-    fig = go.Figure()
-    
-    range_x=[0, 500]
-    range_y=[0,100]
-    # Calculate sizeref dynamically based on the plot dimensions
-    plot_width = range_x[1] - range_x[0]
-    plot_height = range_y[1] - range_y[0]
-    sizeref = 2.0 * max(plot_width, plot_height) / (100 ** 2)  # Adjust the denominator for scaling
-    
-    np.random.seed(100)
-    N = len(canteiro_data["plantas"])
-    colors = np.random.rand(N)
-        
-    x=[]
-    y=[]
-    sz = []
-    
-    for planta in canteiro_data["plantas"]:
-
-        fig.add_trace(go.Scatter(
-            x=x,
-            y=y,
-            mode="markers",
-            marker=go.scatter.Marker(
-                size=sz,
-                sizemode="diameter",
-                sizeref=1,
-                color=colors,
-                opacity=0.6,
-                colorscale="Viridis"
-            )
-        ))
-        
-    # Configuração Eixos
-    fig.update_xaxes(
-        type="linear",
-        range=range_x
-    )
-    fig.update_yaxes(
-        type="linear",
-        range=range_y
-    )
-    # Update marker sizes using update_traces()
-    fig.update_traces(
-        marker=dict(
-            sizeref=1
-        )
-    )
-    
-    fig.show()
-    
-     # Extract only the data and layout
-    fig_data = {
-        "data": fig.to_dict()["data"],    # Raw trace data
-        "layout": fig.to_dict()["layout"] # Layout config
-    }
-    fig_data_json = json.dumps(fig_data)
-    print(len(fig_data_json))
-    
-    # Converts to a JSON string
-    json_str = fig.to_json()
-    
-    print("json_str: ", len(json_str))
-    
     canteiro = Canteiro(
         nome_canteiro='cantieroTest1',
-        svg_canteiro=fig_data
+        x_canteiro=800,
+        y_canteiro=200
     )
+    canteiro.distribuir_plantas(canteiro_data["plantas"])
+    canteiro.criar_grafico()
     logger.debug(f"Criado canteiro de nome: '{canteiro.nome_canteiro}'")
     return jsonify(apresenta_canteiro(canteiro)), 200
     

@@ -65,14 +65,6 @@ def distribuir_plantas_no_canteiro(plantas, canteiro_x, canteiro_y):
         offset_X = (canteiro_x - (num_plantas_x - 1) * espacamento_X) / 2
         offset_Y = (canteiro_y - (num_plantas_y - 1) * espacamento_Y) / 2
         
-        ## Sobra espaco X e Y nos cantos do canteiro
-        #diff_esp_x = canteiro_x % num_plantas_x
-        #diff_esp_y = canteiro_x % num_plantas_y
-        
-        ## Valor iniciais
-        #x_init = (espacamento / 2) + (diff_esp_x / 2)
-        #y = (espacamento / 2) + (diff_esp_y / 2)
-        
         num_planta = 0 
         for i in range(num_plantas_x):
             for j in range(num_plantas_y):
@@ -91,35 +83,8 @@ def distribuir_plantas_no_canteiro(plantas, canteiro_x, canteiro_y):
                 print(f"planta: {num_planta}: {[x,y]}")
                 
                 if len(canteiro[estrato]) >= num_plantas_possiveis:
-                    pass  # Retorna quando atingir o limite de quadrados
-
-        pass
+                    continue  # Retorna quando atingir o limite de plantas
         
-        #num_planta = 0  
-        #for _ in range(num_plantas_y):
-        #    # Iniciando x
-        #    x = x_init
-        #        
-        #    for _ in range(num_plantas_x):
-        #        
-        #        num_planta +=1
-        #        print(f"planta: {num_planta}: {[x,y]}")
-        #        
-        #        # Adicionando a planta ao estrato
-        #        canteiro[estrato].append({
-        #            "nome_planta": planta['nome_planta'],
-        #            "estrato": estrato,
-        #            "posicao": [x, y],
-        #            "diametro": espacamento,
-        #            "tempo_colheita": planta['tempo_colheita']
-        #        })
-        #        # atualizando Y
-        #        x += espacamento
-        #        
-        #    # atualizando X
-        #    y += espacamento
-
-            
     return canteiro
 
 # Dados das plantas
@@ -161,6 +126,5 @@ canteiro_y = 200
 # Distribuindo as plantas no canteiro
 plantas_distribuidas = distribuir_plantas_no_canteiro(plantas, canteiro_x, canteiro_y)
 
-## Exibindo o resultado
-#for estrato in plantas_distribuidas:
-#    print(plantas_distribuidas)
+
+print(len(str(plantas_distribuidas)))
