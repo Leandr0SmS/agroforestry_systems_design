@@ -17,7 +17,7 @@ class Canteiro(Base):
     plantas_canteiro = Column(String(100000), nullable=False)
     dados_grafico_cantiero = Column(String(100000))
 
-    def __init__(self, nome_canteiro:str, x_canteiro:int, y_canteiro:int):
+    def __init__(self, nome_canteiro:str, x_canteiro:int, y_canteiro:int, plantas_canteiro:dict):
         """
         Cria um Canteiro
 
@@ -25,12 +25,14 @@ class Canteiro(Base):
             nome_canteiro: O nome da canteiro
             x_canteiro: Valor do eixo X do canteiro
             y_canteiro: Valor do exico Y do canteiro
+            plantas_canteiro: Plantas de cada estrato
         """
         self.nome_canteiro = nome_canteiro
         self.x_canteiro = x_canteiro
         self.y_canteiro = y_canteiro
+        self.plantas_canteiro = plantas_canteiro
         
-    def distribuir_plantas(self, plantas):
+    def distribuir_plantas(self):
         # Definindo o canteiro
         canteiro = {
             "emergente": [],
@@ -41,9 +43,11 @@ class Canteiro(Base):
     
         canteiro_x = int(self.x_canteiro)
         canteiro_y = int(self.y_canteiro)
+        
+        print(self.plantas_canteiro)
     
         # Ordenando as plantas por tempo de colheita (priorizando colheita mais rápida)
-        plantas_ordenadas = sorted(plantas, key=lambda x: int(x['tempo_colheita']))
+        plantas_ordenadas = sorted(self.plantas_canteiro['plantas'], key=lambda x: int(x['tempo_colheita']))
     
         # Distribuindo as plantas nos estratos
         for planta in plantas_ordenadas:
@@ -187,13 +191,17 @@ class Canteiro(Base):
                 name=estrato,
                 mode="markers",
                 customdata=titles,
-                hovertemplate="<b>Nome</b>: %{customdata[0]}<br><b>estrato</b>: %{customdata[1]}<br><b>Posicao</b>: %{customdata[2]}<br><b>diametro</b>: %{customdata[3]}<extra></extra>",
+                hovertemplate="""
+                <b>Nome</b>: %{customdata[0]}<br>
+                <b>estrato</b>: %{customdata[1]}<br>
+                <b>Posicao</b>: %{customdata[2]}<br>
+                <b>diametro</b>: %{customdata[3]}""",
                 marker=go.scatter.Marker(
                     size=sz,
                     sizemode="diameter",
                     sizeref=sizeref,
                     color=colors[0],
-                    opacity=0.6,
+                    opacity=0.4,
                     colorscale="Earth"
                 )
             ))

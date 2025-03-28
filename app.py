@@ -26,54 +26,23 @@ def home():
     """
     return redirect('/openapi')
     
-@app.get('/canteiro', tags=[canteiro_tag],
+@app.put('/canteiro', tags=[canteiro_tag],
          responses={"200": CanteiroSchema, "404": ErrorSchema})
-def get_canteiro():
+def get_canteiro(form: CanteiroSchema):
     """
     Retorna uma representação do Canteiro.
     """
     logger.debug(f"Criando Canteiro")
     
-    canteiro_data = {
-        "plantas": [
-            {
-              "espacamento": 200,
-              "estrato": "emergente",
-              "nome_planta": "Embaúba",
-              "sombra": 20,
-              "tempo_colheita": 1095
-            },
-            {
-              "espacamento": 100,
-              "estrato": "alto",
-              "nome_planta": "Jucara",
-              "sombra": 40,
-              "tempo_colheita": 2555
-            },
-            {
-              "espacamento": 50,
-              "estrato": "medio",
-              "nome_planta": "Pimenta-do-reino",
-              "sombra": 60,
-              "tempo_colheita": 1460
-            },
-            {
-              "espacamento": 40,
-              "estrato": "baixo",
-              "nome_planta": "Abacaxi",
-              "sombra": 80,
-              "tempo_colheita": 730
-            }
-        ]
-    }
-    
     #try: 
     canteiro = Canteiro(
-        nome_canteiro='cantieroTest1',
-        x_canteiro=800,
-        y_canteiro=200
+        nome_canteiro=form.nome_canteiro,
+        x_canteiro=form.x_canteiro,
+        y_canteiro=form.y_canteiro,
+        plantas_canteiro=form.plantas_canteiro
     )
-    canteiro.distribuir_plantas(canteiro_data["plantas"])
+    
+    canteiro.distribuir_plantas()
     canteiro.criar_grafico()
     logger.debug(f"Criado canteiro de nome: '{canteiro.nome_canteiro}'")
     return jsonify(apresenta_canteiro(canteiro)), 200
