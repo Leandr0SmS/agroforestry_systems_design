@@ -40,37 +40,71 @@ def distribuir_plantas_no_canteiro(plantas, canteiro_x, canteiro_y):
         if area_planta > estrato_disponivel:
             continue
         
-        # numero de plantas possiveis X e Y
-        num_plantas_x = canteiro_x // espacamento
-        print("X: ", num_plantas_x)
+        ## numero de plantas possiveis X e Y
+        #num_plantas_x = canteiro_x // espacamento
+        #print("X: ", num_plantas_x)
+        #
+        #num_plantas_y = canteiro_y // espacamento
+        #print("Y: ", num_plantas_y)
+        #
+        #num_plantas_possiveis = num_plantas_x * num_plantas_y
+        #
+        ## Verifica se a área total ocupada excede o limite
+        #if num_plantas_possiveis * area_planta > estrato_disponivel:
+        #    num_plantas_possiveis = int(estrato_disponivel // area_planta)
+        #    if num_plantas_possiveis == 0:
+        #        continue
+        #
+        #print('num_plantas_possiveis: ', num_plantas_possiveis)
+        #    
+        ## Calcula a posição das plantas distribuídas uniformemente
+        #espacamento_X = canteiro_x / num_plantas_x
+        #espacamento_Y = canteiro_y / num_plantas_y 
+        # 
+        ## Ajusta para centralizar as plantas no plano
+        #offset_X = (canteiro_x - (num_plantas_x - 1) * espacamento_X) / 2
+        #offset_Y = (canteiro_y - (num_plantas_y - 1) * espacamento_Y) / 2
         
-        num_plantas_y = canteiro_y // espacamento
-        print("Y: ", num_plantas_y)
+        num_plantas_possiveis = int(estrato_disponivel // area_planta)
+        if num_plantas_possiveis == 0:
+            continue
         
-        num_plantas_possiveis = num_plantas_x * num_plantas_y
+        print('numero plantas possiveis:', num_plantas_possiveis)
         
-        # Verifica se a área total ocupada excede o limite
-        if num_plantas_possiveis * area_planta > estrato_disponivel:
-            num_plantas_possiveis = int(estrato_disponivel // area_planta)
-            if num_plantas_possiveis == 0:
+        num_plantas_y = 1
+        num_plantas_x = num_plantas_possiveis
+        espacamento_x = canteiro_x // (num_plantas_x + 1)
+        espacamento_y = canteiro_y // (num_plantas_y + 1)
+        
+        print(f"espacamentoX: {espacamento_x}, espacamentoY: {espacamento_y}")
+        print(f'num_plantas_x: {num_plantas_x}, num_plantas_y: {num_plantas_y}')
+          
+        count = 0  
+        while espacamento_x < espacamento:
+            num_plantas_x = num_plantas_possiveis
+            if espacamento_y < espacamento:
                 continue
+            num_plantas_y += 1
+            num_plantas_x /= num_plantas_y
+            espacamento_x = int(canteiro_x // (num_plantas_x + 1))
+            espacamento_y = int(canteiro_y // (num_plantas_y + 1))
+        print(f"espacamentoX: {espacamento_x}, espacamentoY: {espacamento_y}")
+        print(f'num_plantas_x: {num_plantas_x}, num_plantas_y: {num_plantas_y}')
         
-        print('num_plantas_possiveis: ', num_plantas_possiveis)
-            
-        # Calcula a posição das plantas distribuídas uniformemente
-        espacamento_X = canteiro_x / num_plantas_x
-        espacamento_Y = canteiro_y / num_plantas_y 
-         
-        # Ajusta para centralizar as plantas no plano
-        offset_X = (canteiro_x - (num_plantas_x - 1) * espacamento_X) / 2
-        offset_Y = (canteiro_y - (num_plantas_y - 1) * espacamento_Y) / 2
+        num_plantas_x = int(num_plantas_x)
+        num_plantas_y = int(num_plantas_y)
+
+        # Ajusta o offset para centrar as plantas no canteiro
+        offset_x = (canteiro_x / num_plantas_x) // 2
+        offset_y = (canteiro_y / num_plantas_y) // 2
+        
+        x = offset_x
+        y = offset_y
         
         num_planta = 0 
-        for i in range(num_plantas_x):
-            for j in range(num_plantas_y):
+        for i in range(num_plantas_y):
+            for j in range(num_plantas_x):
                 
-                x = offset_X + i * espacamento_X
-                y = offset_Y + j * espacamento_Y
                 canteiro[estrato].append({
                     "nome_planta": planta['nome_planta'],
                     "estrato": estrato,
@@ -82,8 +116,12 @@ def distribuir_plantas_no_canteiro(plantas, canteiro_x, canteiro_y):
                 num_planta +=1
                 print(f"planta: {num_planta}: {[x,y]}")
                 
-                if len(canteiro[estrato]) >= num_plantas_possiveis:
-                    continue  # Retorna quando atingir o limite de plantas
+                x += espacamento_x
+                
+                #if len(canteiro[estrato]) >= num_plantas_possiveis:
+                #    continue  # Retorna quando atingir o limite de plantas
+            
+            y += espacamento_y
         
     return canteiro
 
