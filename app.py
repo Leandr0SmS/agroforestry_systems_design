@@ -6,9 +6,6 @@ from logger import logger
 from model import Session, Canteiro
 from schemas import *
 
-import numpy as np
-import plotly.graph_objects as go
-import json 
 
 info = Info(title="Meu Canteiro Plot", version="1.0.0")
 app = OpenAPI(__name__, info=info)
@@ -26,7 +23,7 @@ def home():
     """
     return redirect('/openapi')
     
-@app.put('/canteiro', tags=[canteiro_tag],
+@app.post('/canteiro', tags=[canteiro_tag],
          responses={"200": CanteiroSchema, "404": ErrorSchema})
 def get_canteiro(form: CanteiroSchema):
     """
@@ -45,7 +42,8 @@ def get_canteiro(form: CanteiroSchema):
     canteiro.distribuir_plantas()
     canteiro.criar_grafico()
     logger.debug(f"Criado canteiro de nome: '{canteiro.nome_canteiro}'")
-    return jsonify(apresenta_canteiro(canteiro)), 200
+    print(apresenta_canteiro(canteiro))
+    return jsonify(canteiro.plantas_canteiro), 200
     
     #except Exception as e:
     #    # caso um erro fora do previsto
