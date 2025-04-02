@@ -1,4 +1,4 @@
-from flask import redirect, jsonify
+from flask import redirect, jsonify, request
 from flask_openapi3 import OpenAPI, Info, Tag
 from flask_cors import CORS
 from logger import logger
@@ -25,24 +25,32 @@ def home():
     
 @app.post('/canteiro', tags=[canteiro_tag],
          responses={"200": CanteiroSchema, "404": ErrorSchema})
-def get_canteiro(form: CanteiroSchema):
+def get_canteiro():
     """
     Retorna uma representação do Canteiro.
     """
     logger.debug(f"Criando Canteiro")
     
     #try: 
+    
+    """Debugging endpoint"""
+    logger.debug(f"Raw received data: {request.get_json()}")
+    
+    raw_data = request.get_json()
+    query = CanteiroSchema.parse_obj(raw_data)
+    print("✅ Raw JSON:", raw_data)
+    print("🔄 Parsed Schema:", query.dict())
     canteiro = Canteiro(
-        nome_canteiro=form.nome_canteiro,
-        x_canteiro=form.x_canteiro,
-        y_canteiro=form.y_canteiro,
-        plantas_canteiro=form.plantas_canteiro
+        nome_canteiro=query.nome_canteiro,
+        x_canteiro=query.x_canteiro,
+        y_canteiro=query.y_canteiro,
+        plantas_canteiro=query.plantas_canteiro
     )
     
     canteiro.distribuir_plantas()
     canteiro.criar_grafico()
     logger.debug(f"Criado canteiro de nome: '{canteiro.nome_canteiro}'")
-    print(apresenta_canteiro(canteiro))
+    #print(apresenta_canteiro(canteiro))
     return jsonify(canteiro.plantas_canteiro), 200
     
     #except Exception as e:
