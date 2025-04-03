@@ -22,7 +22,7 @@ Instalar dependências:
 Executar o app com o comando:
 
 ```
-(env)$ flask run --host 0.0.0.0 --port 5000
+(env)$ flask run --host 0.0.0.0 --port 5001
 ```
 
 ### Replit:
@@ -37,16 +37,16 @@ Navegue até o diretório que contém o Dockerfile e o requirements.txt no termi
 Execute **como administrador** o seguinte comando para construir a imagem Docker:
 
 ```
-$ docker build -t meu_canteiro_api .
+$ docker build -t agroforestry_systems_design .
 ```
 
 Uma vez criada a imagem, para executar o container basta executar, **como administrador**, seguinte o comando:
 
 ```
-$ docker run -p 5000:5000 meu_canteiro_api
+$ docker run -p 5001:5001 agroforestry_systems_design
 ```
 
-Uma vez executando, para acessar a API, basta abrir o [http://localhost:5000/#/](http://localhost:5000/#/) no navegador.
+Uma vez executando, para acessar a API, basta abrir o [http://localhost:5001/#/](http://localhost:5001/#/) no navegador.
 
 ### Alguns comandos úteis do Docker
 
