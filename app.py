@@ -31,36 +31,29 @@ def get_canteiro():
     """
     logger.debug(f"Criando Canteiro")
     
-    #try: 
+    try: 
+
+        raw_data = request.get_json()
+        query = CanteiroSchema.model_validate(raw_data)
+        canteiro = Canteiro(
+            nome_canteiro=query.nome_canteiro,
+            x_canteiro=query.x_canteiro,
+            y_canteiro=query.y_canteiro,
+            plantas_canteiro=query.plantas_canteiro
+        )
+
+        canteiro.distribuir_plantas()
+        logger.debug(f"Criado canteiro de nome: '{canteiro.nome_canteiro}'")
+        return apresenta_canteiro(canteiro), 200
     
-    """Debugging endpoint"""
-    logger.debug(f"Raw received data: {request.get_json()}")
-    
-    raw_data = request.get_json()
-    query = CanteiroSchema.model_validate(raw_data)
-    print("✅ Raw JSON:", raw_data)
-    print("🔄 Parsed Schema:", query.model_dump())
-    canteiro = Canteiro(
-        nome_canteiro=query.nome_canteiro,
-        x_canteiro=query.x_canteiro,
-        y_canteiro=query.y_canteiro,
-        plantas_canteiro=query.plantas_canteiro
-    )
-    
-    canteiro.distribuir_plantas()
-    canteiro.criar_grafico()
-    logger.debug(f"Criado canteiro de nome: '{canteiro.nome_canteiro}'")
-    #print(apresenta_canteiro(canteiro))
-    return apresenta_canteiro(canteiro), 200
-    
-    #except Exception as e:
-    #    # caso um erro fora do previsto
-    #    error_msg = "Não foi possível gerar o Canteiro"
-    #    logger.warning(f"Erro ao gerar o canteiro, {error_msg}")
-    #    return jsonify({
-    #        "error": error_msg,
-    #        "status": "failed"
-    #    }), 500
+    except Exception as e:
+        # caso um erro fora do previsto
+        error_msg = "Não foi possível gerar o Canteiro"
+        logger.warning(f"Erro ao gerar o canteiro, {error_msg}")
+        return jsonify({
+            "error": error_msg,
+            "status": "failed"
+        }), 500
     
 if __name__ == '__main__':
     app.run(debug=True)

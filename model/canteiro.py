@@ -2,10 +2,6 @@ from sqlalchemy import Column, String, Integer#, ForeignKey
 
 from  model import Base
 
-import numpy as np
-import plotly.graph_objects as go
-import json 
-
 
 class Canteiro(Base):
     __tablename__ = 'canteiros'
@@ -129,122 +125,6 @@ class Canteiro(Base):
                 y += espacamento_y
     
         self.plantas_canteiro = canteiro
-        
-    def criar_grafico(self):
-        #try: 
-        fig = go.Figure()
-
-        range_x=[0, self.x_canteiro]
-        range_y=[0, self.y_canteiro]
-        
-        # Calculate sizeref dynamically based on the plot dimensions
-        plot_width = range_x[1] - range_x[0]
-        plot_height = range_y[1] - range_y[0]
-        
-        # Ensure both axes have the same scaling
-        fig.update_layout(
-            autosize=False,  
-            xaxis=dict(
-                scaleanchor="y",  # Locks X-axis to Y-axis scale
-                range=range_x,     # Restrict X-axis to defined range
-                constrain='domain' # Prevents expansion beyond range
-            ),
-            yaxis=dict(
-                scaleanchor="x",  # Locks Y-axis to X-axis scale
-                range=range_y,    # Restrict Y-axis to defined range
-                constrain='domain' # Prevents expansion beyond range
-            )
-        )
-        
-        max_diameter = max([planta['diametro'] for plantas in self.plantas_canteiro.values() for planta in plantas])
-        
-        # Adjust divisor to control relative size of markers
-        scaling_factor = 5  # Increase this value to make plants smaller
-        sizeref = (max(range_x[1], range_y[1]) / max_diameter) / scaling_factor
-
-        np.random.seed(100)
-        N = len(self.plantas_canteiro)
-        colors = np.random.rand(N)
-
-        for estrato, plantas in self.plantas_canteiro.items():
-            
-            x=[]
-            y=[]
-            sz = []
-            titles = []
-            
-            for planta in plantas:
-                title = []
-                title.extend([
-                    planta['nome_planta'],
-                    planta['estrato'],
-                    planta['posicao'],
-                    planta['diametro']
-                ])
-                x.append(int(planta['posicao'][0]))
-                y.append(int(planta['posicao'][1]))
-                sz.append(int(planta['diametro']))
-                titles.append(title)
-        
-            fig.add_trace(go.Scatter(
-                x=x,
-                y=y,
-                name=estrato,
-                mode="markers",
-                customdata=titles,
-                hovertemplate="""
-                <b>Nome</b>: %{customdata[0]}<br>
-                <b>estrato</b>: %{customdata[1]}<br>
-                <b>Posicao</b>: %{customdata[2]}<br>
-                <b>diametro</b>: %{customdata[3]}""",
-                marker=go.scatter.Marker(
-                    size=sz,
-                    sizemode="diameter",
-                    sizeref=sizeref,
-                    color=colors[0],
-                    opacity=0.4,
-                    colorscale="Earth"
-                )
-            ))
-
-        # Configuração Eixos
-        fig.update_xaxes(
-            type="linear",
-            range=range_x
-        )
-        fig.update_yaxes(
-            type="linear",
-            range=range_y
-        )
-        
-        fig.show()
-        
-        # Extract only the data and layout
-        fig_data = {
-            "data": fig.to_dict()["data"],    # Raw trace data
-            "layout": fig.to_dict()["layout"] # Layout config
-        }
-        
-        fig_data_json = json.dumps(fig_data)
-        print(len(fig_data_json))
-
-        # Converts to a JSON string
-        fig_data_json_str = fig.to_json()
-
-        print("json_str: ", len(fig_data_json_str))
-
-        self.dados_grafico_cantiero = fig_data_json_str
-        
-        return fig_data_json_str
-
-        #except Exception as e:
-        #    # caso um erro fora do previsto
-        #    error_msg = "Não foi possível gerar o Canteiro"
-        #    logger.warning(f"Erro ao gerar o canteiro, {error_msg}")
-        #    return jsonify({
-        #        "error": error_msg,
-        #        "status": "failed"
-        #    }), 500
         
     def __repr__(self):
         return f'Canteiro("{self.nome_canteiro}","{self.plantas_canteiro}")'
