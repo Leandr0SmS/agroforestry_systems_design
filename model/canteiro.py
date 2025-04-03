@@ -29,7 +29,7 @@ class Canteiro(Base):
         
     def distribuir_plantas(self):
         
-        print(self.plantas_canteiro)
+        #print(self.plantas_canteiro)
         # Definindo o canteiro
         canteiro = {
             "emergente": [],
@@ -90,12 +90,12 @@ class Canteiro(Base):
                 espacamento_x = int(canteiro_x // (num_plantas_x + 1))
                 espacamento_y = int(canteiro_y // (num_plantas_y + 1))
 
-            print(f"espacamentoX: {espacamento_x}, espacamentoY: {espacamento_y}")
+            #print(f"espacamentoX: {espacamento_x}, espacamentoY: {espacamento_y}")
 
             num_plantas_x = int(num_plantas_x)
             num_plantas_y = int(num_plantas_y)
             
-            print(f'num_plantas_x: {num_plantas_x}, num_plantas_y: {num_plantas_y}')
+            #print(f'num_plantas_x: {num_plantas_x}, num_plantas_y: {num_plantas_y}')
             
             y = espacamento_y
     

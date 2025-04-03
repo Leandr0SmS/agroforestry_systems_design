@@ -29,29 +29,21 @@ def home():
     
 @app.put('/canteiro', tags=[canteiro_tag],
          responses={"200": CanteiroSchema, "404": ErrorSchema})
-def get_canteiro(form: CanteiroSchema):
+def get_canteiro(body: CanteiroSchema):
     """
-    Retorna uma representação do Canteiro.
+    Adiciona um canteiro a base e distribui a plantas
+    Retorna uma representação do Canteiro e as plantas destribuidas.
     """
     logger.debug(f"Criando Canteiro")
     
     try: 
-
-        raw_data = request.get_json()
-        query = CanteiroSchema.model_validate(raw_data)
-        logger.debug(f"Criado canteiro de nome: '{query.nome_canteiro}'")
+    
         canteiro = Canteiro(
-            nome_canteiro=query.nome_canteiro,
-            x_canteiro=query.x_canteiro,
-            y_canteiro=query.y_canteiro,
-            plantas_canteiro=query.plantas_canteiro
+            nome_canteiro=body.nome_canteiro,
+            x_canteiro=body.x_canteiro,
+            y_canteiro=body.y_canteiro,
+            plantas_canteiro=body.plantas_canteiro.model_dump()
         )
-        print({
-            'nome_canteiro':query.nome_canteiro,
-            'x_canteiro':query.x_canteiro,
-            'y_canteiro':query.y_canteiro,
-            'plantas_canteiro':query.plantas_canteiro
-        })
 
         logger.debug(f"Adicionando canteiro de nome: '{canteiro.nome_canteiro}'")
         try:
@@ -61,7 +53,6 @@ def get_canteiro(form: CanteiroSchema):
                 session.add(canteiro)
                 session.commit()
                 logger.debug(f"Adicionado canteiro de nome: '{canteiro.nome_canteiro}'")
-
         except IntegrityError as e:
             # como a duplicidade do nome é a provável razão do IntegrityError
             error_msg = "Canteiro de mesmo nome já salvo na base :/"
@@ -73,7 +64,6 @@ def get_canteiro(form: CanteiroSchema):
             error_msg = "Não foi possível salvar novo canteiro :/"
             logger.warning(f"Erro ao adicionar planta '{canteiro.nome_canteiro}', {error_msg}")
             return {"mesage": error_msg}, 400
-
         # Destribuindo plantas pela area do canteiro
         logger.debug(f"Destribuindo plantas no canteiro: '{canteiro.nome_canteiro}'")
         canteiro.distribuir_plantas()
@@ -119,6 +109,52 @@ def add_planta(form: CanteiroUpdateSchema):
         
         logger.debug(f"Editado canteiro #{nome_canteiro}")
         return {"message": "Canteiro atualizada", "nome_canteiro": nome_canteiro}
+    
+@app.get('/canteiros', tags=[canteiro_tag],
+         responses={"200": ListagemCanteirosSchema, "404": ErrorSchema})
+def get_plantas():
+    """Faz a busca por todos canteiros cadastrados
+
+    Retorna uma representação da listagem deos canteiros.
+    """
+    logger.debug(f"Coletando canteiros ")
+    # criando conexão com a base
+    with Session() as session:
+        # fazendo a busca
+        canteiros = session.query(Canteiro).all()
+        session.commit()
+
+        if not canteiros:
+            # se não há canteiros cadastrados
+            return {"canteiros": []}, 200
+        else:
+            logger.debug(f"{len(canteiros)} canteiros econtrados")
+            # retorna a representação de planta
+            return apresenta_canteiros(canteiros), 200
+        
+@app.delete('/canteiro', tags=[canteiro_tag],
+            responses={"200": CanteiroDelSchema, "404": ErrorSchema})
+def del_planta(query: CanteiroBuscaSchema):
+    """Deleta um Canteiro a partir do nome da canteiro informada
+
+    Retorna uma mensagem de confirmação da remoção.
+    """
+    canteiro_to_del = unquote(unquote(query.nome_canteiro))
+    logger.debug(f"Deletando dados sobre Canteiro #{canteiro_to_del}")
+    # criando conexão com a base
+    with Session() as session:
+        # fazendo a remoção
+        del_canteiro = session.query(Canteiro).filter(Canteiro.nome_canteiro == canteiro_to_del).delete()
+        session.commit()
+    if del_canteiro:
+        # retorna a representação da mensagem de confirmação
+        logger.debug(f"Deletado Canteiro #{canteiro_to_del}")
+        return {"mesage": "Canteiro removido", "nome_Canteiro": canteiro_to_del}
+    else:
+        # se o Canteiro não foi encontrado
+        error_msg = "Canteiro não encontrado na base :/"
+        logger.warning(f"Erro ao deletar Canteiro #'{canteiro_to_del}', {error_msg}")
+        return {"message": error_msg}, 404
     
 if __name__ == '__main__':
     app.run(debug=True)
