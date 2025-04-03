@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer#, ForeignKey
+from sqlalchemy import Column, String, Integer, JSON#, ForeignKey
 
 from  model import Base
 
@@ -10,8 +10,7 @@ class Canteiro(Base):
     nome_canteiro = Column(String(140), unique=True, nullable=False)
     x_canteiro = Column(Integer, nullable=False)
     y_canteiro = Column(Integer, nullable=False)
-    plantas_canteiro = Column(String(100000), nullable=False)
-    dados_grafico_cantiero = Column(String(100000))
+    plantas_canteiro = Column(JSON(100000), nullable=False)
 
     def __init__(self, nome_canteiro:str, x_canteiro:int, y_canteiro:int, plantas_canteiro:dict):
         """
