@@ -3,6 +3,8 @@ from flask_openapi3 import OpenAPI, Info, Tag
 from flask_cors import CORS
 from logger import logger
 
+from urllib.parse import unquote
+
 from sqlalchemy.exc import IntegrityError
 
 from model import Session, Canteiro
@@ -25,7 +27,7 @@ def home():
     """
     return redirect('/openapi')
     
-@app.post('/canteiro', tags=[canteiro_tag],
+@app.put('/canteiro', tags=[canteiro_tag],
          responses={"200": CanteiroSchema, "404": ErrorSchema})
 def get_canteiro(form: CanteiroSchema):
     """
@@ -85,6 +87,38 @@ def get_canteiro(form: CanteiroSchema):
             "error": error_msg,
             "status": "failed"
         }), 500
+    
+@app.post('/canteiro', tags=[canteiro_tag],
+          responses={"200": CanteiroUpdateSchema, "409": ErrorSchema, "400": ErrorSchema})
+def add_planta(form: CanteiroUpdateSchema):
+    """Edita um novo canteiro à base de dados
+
+    Retorna uma representação do canteiro.
+    """
+    nome_canteiro = unquote(unquote(form.nome_canteiro))
+    logger.debug(f"Editando dados sobre canteiro #{nome_canteiro}")
+    
+    with Session() as session:
+        # Buscando canteiro
+        canteiro_to_updt = session.query(Canteiro).filter(Canteiro.nome_canteiro == nome_canteiro).first()
+        
+        if not canteiro_to_updt:
+            error_msg = "Canteiro não encontrada na base :/"
+            logger.warning(f"Erro ao editar canteiro #'{nome_canteiro}', {error_msg}")
+            return {"message": error_msg}, 404
+        
+        # Editando atributos
+        if form.x_canteiro is not None:
+            canteiro_to_updt.x_canteiro = form.x_canteiro
+        if form.y_canteiro is not None:
+            canteiro_to_updt.y_canteiro = form.y_canteiro
+        if form.plantas_canteiro is not None:
+            canteiro_to_updt.plantas_canteiro = form.plantas_canteiro
+        
+        session.commit()
+        
+        logger.debug(f"Editado canteiro #{nome_canteiro}")
+        return {"message": "Canteiro atualizada", "nome_canteiro": nome_canteiro}
     
 if __name__ == '__main__':
     app.run(debug=True)

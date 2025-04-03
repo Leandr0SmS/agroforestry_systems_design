@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-#from typing import Optional, List
+from typing import Optional
 from model.canteiro import Canteiro
 
 
@@ -63,15 +63,46 @@ class CanteiroViewSchema(BaseModel):
 #     mesage: str
 #     nome_planta: str
 #     
-# class PlantaUpdateSchema(BaseModel):
-#     """ Define como uma nova planta a ser editada deve ser representada
-#     """
-#     nome_planta: str = "Bananeira Prata"
-#     tempo_colheita: Optional[int] = 300
-#     estrato: Optional[str] = "medio"
-#     espacamento: Optional[float] = 2
-#     
-#     
+class CanteiroUpdateSchema(BaseModel):
+    """ Define como um canteiro deve ser editado
+    """
+    nome_canteiro: str = "Canteiro1"
+    x_canteiro: Optional[int] = 1100
+    y_canteiro: Optional[int] = 250
+    plantas_canteiro: Optional[dict] = {
+        "plantas": [
+            {
+              "espacamento": 200,
+              "estrato": "emergente",
+              "nome_planta": "Embaúba",
+              "sombra": 20,
+              "tempo_colheita": 1095
+            },
+            {
+              "espacamento": 100,
+              "estrato": "alto",
+              "nome_planta": "Jucara",
+              "sombra": 40,
+              "tempo_colheita": 2555
+            },
+            {
+              "espacamento": 50,
+              "estrato": "medio",
+              "nome_planta": "Pimenta-do-reino",
+              "sombra": 60,
+              "tempo_colheita": 1460
+            },
+            {
+              "espacamento": 40,
+              "estrato": "baixo",
+              "nome_planta": "Abacaxi",
+              "sombra": 80,
+              "tempo_colheita": 730
+            }
+        ]
+    }
+    
+    
 # class ListagemPlantasSchema(BaseModel):
 #     """ Define como uma listagem das plantas será retornada.
 #     """
