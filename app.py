@@ -37,9 +37,9 @@ def get_canteiro():
     logger.debug(f"Raw received data: {request.get_json()}")
     
     raw_data = request.get_json()
-    query = CanteiroSchema.parse_obj(raw_data)
+    query = CanteiroSchema.model_validate(raw_data)
     print("✅ Raw JSON:", raw_data)
-    print("🔄 Parsed Schema:", query.dict())
+    print("🔄 Parsed Schema:", query.model_dump())
     canteiro = Canteiro(
         nome_canteiro=query.nome_canteiro,
         x_canteiro=query.x_canteiro,
@@ -51,7 +51,7 @@ def get_canteiro():
     canteiro.criar_grafico()
     logger.debug(f"Criado canteiro de nome: '{canteiro.nome_canteiro}'")
     #print(apresenta_canteiro(canteiro))
-    return jsonify(canteiro.plantas_canteiro), 200
+    return apresenta_canteiro(canteiro), 200
     
     #except Exception as e:
     #    # caso um erro fora do previsto
