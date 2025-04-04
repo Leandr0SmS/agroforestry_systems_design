@@ -29,7 +29,7 @@ def home():
     
 @app.put('/canteiro', tags=[canteiro_tag],
          responses={"200": CanteiroSchema, "404": ErrorSchema})
-def get_canteiro(body: CanteiroSchema):
+def put_canteiro(body: CanteiroSchema):
     """
     Adiciona um canteiro a base e distribui a plantas
     Retorna uma representação do Canteiro e as plantas destribuidas.
@@ -80,7 +80,7 @@ def get_canteiro(body: CanteiroSchema):
     
 @app.post('/canteiro', tags=[canteiro_tag],
           responses={"200": CanteiroUpdateSchema, "409": ErrorSchema, "400": ErrorSchema})
-def add_planta(form: CanteiroUpdateSchema):
+def add_canteiro(form: CanteiroUpdateSchema):
     """Edita um novo canteiro à base de dados
 
     Retorna uma representação do canteiro.
@@ -112,7 +112,7 @@ def add_planta(form: CanteiroUpdateSchema):
     
 @app.get('/canteiros', tags=[canteiro_tag],
          responses={"200": ListagemCanteirosSchema, "404": ErrorSchema})
-def get_plantas():
+def get_canteiros():
     """Faz a busca por todos canteiros cadastrados
 
     Retorna uma representação da listagem deos canteiros.
@@ -134,7 +134,7 @@ def get_plantas():
         
 @app.delete('/canteiro', tags=[canteiro_tag],
             responses={"200": CanteiroDelSchema, "404": ErrorSchema})
-def del_planta(query: CanteiroBuscaSchema):
+def del_canteiro(query: CanteiroBuscaSchema):
     """Deleta um Canteiro a partir do nome da canteiro informada
 
     Retorna uma mensagem de confirmação da remoção.
