@@ -31,19 +31,20 @@ Executar o app com o comando:
 
 ### Executar com Docker
 
+É importante executar a API meu canteiro para configurar a rede.
+
 Certifique-se de ter o [Docker](https://docs.docker.com/engine/install/) instalado e em execução em sua máquina.
 
 Navegue até o diretório que contém o Dockerfile e o requirements.txt no terminal.
-Execute **como administrador** o seguinte comando para construir a imagem Docker:
 
+Execute **como administrador** o seguinte comando para construir a imagem Docker:
 ```
 $ docker build -t agroforestry_systems_design .
 ```
 
 Uma vez criada a imagem, para executar o container basta executar, **como administrador**, seguinte o comando:
-
 ```
-$ docker run -p 5001:5001 agroforestry_systems_design
+docker run --name agroforestry_systems_design --network my_network -p 5001:5001 agroforestry_systems_design
 ```
 
 Uma vez executando, para acessar a API, basta abrir o [http://localhost:5001/#/](http://localhost:5001/#/) no navegador.
