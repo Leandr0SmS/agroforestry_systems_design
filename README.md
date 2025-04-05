@@ -1,6 +1,10 @@
 # agroforestry_systems_design
 Project to design agroforestry systems based on their plants, each with its own light requirements and spacing.
 
+### Arquitetura
+
+![Arquitetura Meu Canteiro SAF](https://github.com/Leandr0SmS/mvp_canteiroSAF_frontend/blob/main/resources/images/Meu_canteiro_Flowchart.png)
+
 ## Executar
 
 - [Localmente com Python, venv e pip](#localmente-com-python)
