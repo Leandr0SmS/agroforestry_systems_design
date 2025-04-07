@@ -29,7 +29,6 @@ class Canteiro(Base):
         
     def distribuir_plantas(self):
         
-        #print(self.plantas_canteiro)
         # Definindo o canteiro
         canteiro = {
             "emergente": [],
@@ -41,8 +40,6 @@ class Canteiro(Base):
         canteiro_x = int(self.x_canteiro)
         canteiro_y = int(self.y_canteiro)
         
-        #print(self.plantas_canteiro)
-    
         # Ordenando as plantas por tempo de colheita (priorizando colheita mais rápida)
         plantas_ordenadas = sorted(self.plantas_canteiro['plantas'], key=lambda x: int(x['tempo_colheita']))
     
@@ -56,26 +53,18 @@ class Canteiro(Base):
     
             # Calculando a área disponível
             area_disponivel = canteiro_x * canteiro_y
-            #print('area disponivel: ', area_disponivel)
-
             # Calculando a área que a planta pode ocupar no estrato
             estrato_disponivel = area_disponivel * (sombra / 100)
-            #print('estrato_disponivel: ', estrato_disponivel)
-
             # Calculando a área que a planta pode ocupar
             area_planta = (espacamento ** 2)
-            #print('area_planta: ', area_planta)
     
             # Verifica se a planta cabe no espaço disponível
             if area_planta > estrato_disponivel:
                 continue
-    
             num_plantas_possiveis = int(estrato_disponivel // area_planta)
             if num_plantas_possiveis == 0:
                 continue
                 
-            #print('numero plantas possiveis:', num_plantas_possiveis)
-
             num_plantas_y = 1
             num_plantas_x = num_plantas_possiveis
             espacamento_x = canteiro_x // (num_plantas_x + 1)
@@ -89,17 +78,10 @@ class Canteiro(Base):
                 num_plantas_x /= num_plantas_y
                 espacamento_x = int(canteiro_x // (num_plantas_x + 1))
                 espacamento_y = int(canteiro_y // (num_plantas_y + 1))
-
-            #print(f"espacamentoX: {espacamento_x}, espacamentoY: {espacamento_y}")
-
             num_plantas_x = int(num_plantas_x)
             num_plantas_y = int(num_plantas_y)
-            
-            #print(f'num_plantas_x: {num_plantas_x}, num_plantas_y: {num_plantas_y}')
-            
             y = espacamento_y
     
-            num_planta = 0 
             for i in range(num_plantas_y):
                 x = espacamento_x
                 
@@ -112,15 +94,7 @@ class Canteiro(Base):
                         "diametro": espacamento,
                         "tempo_colheita": planta['tempo_colheita']
                     })
-                    
-                    num_planta +=1
-                    #print(f"planta: {num_planta}: {[x,y]}")
-                    
                     x += espacamento_x
-                    
-                    #if len(canteiro[estrato]) >= num_plantas_possiveis:
-                    #    continue  # Retorna quando atingir o limite de plantas
-                
                 y += espacamento_y
     
         self.plantas_canteiro = canteiro

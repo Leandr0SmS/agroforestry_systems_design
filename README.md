@@ -22,7 +22,7 @@ Você pode executar a aplicação de duas formas:
 
 ### Execução Local com Python
 
-Inicie primeiro a API [puc_rio-mvp_1-back_end](https://github.com/Leandr0SmS/puc_rio-mvp_1-back_end)
+>Inicie primeiro a API [puc_rio-mvp_1-back_end](https://github.com/Leandr0SmS/puc_rio-mvp_1-back_end)
 
 1. Certifique-se de que o [Python 3.8+](https://www.python.org/) está instalado no sistema.
 2. Crie um ambiente virtual isolado:
@@ -56,10 +56,10 @@ A API estará disponível em: [http://localhost:5001](http://localhost:5001)
    docker build -t agroforestry_systems_design .
 
 
-3. Execute o container (certifique-se de que a rede `my_network` já existe ou a crie):
+3. Execute o container (certifique-se de que a rede `canteiro_network` já existe ou a crie):
 
    ```Docker CLI
-   docker run --name agroforestry_systems_design --network my_network -p 5001:5001 agroforestry_systems_design
+   docker run --name agroforestry_systems_design --network canteiro_network -p 5001:5001 agroforestry_systems_design
 
 
 >[documentação do docker](https://docs.docker.com/engine/reference/run/).
