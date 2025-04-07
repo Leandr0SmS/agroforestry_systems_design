@@ -1,105 +1,64 @@
-# agroforestry_systems_design
-Project to design agroforestry systems based on their plants, each with its own light requirements and spacing.
+# Agroforestry Systems Design
 
-### Arquitetura
+Projeto para o desenvolvimento de sistemas agroflorestais (SAFs), que realiza o planejamento automatizado de canteiros a partir das espécies fornecidas, respeitando critérios de luminosidade, estratificação e espaçamento entre plantas.
 
-![Arquitetura Meu Canteiro SAF](https://github.com/Leandr0SmS/mvp_canteiroSAF_frontend/blob/main/resources/images/Meu_canteiro_Flowchart.png)
+## Funcionalidades
 
-## Executar
+A API oferece recursos para o gerenciamento e organização de canteiros agroflorestais. Entre as principais funcionalidades:
 
-- [Localmente com Python, venv e pip](#localmente-com-python)
-- [Replit](#replit)
-- [Docker](#executar-com-docker)
+- Cadastro, exclusão e edição de canteiros no banco de dados;
+- Distribuição automatizada de plantas em canteiros SAF, com agrupamento por estrato;
 
-### Localmente com Python
+## Como Executar
 
-Certifique-se de ter o [python](https://www.python.org/) instalado.
+Você pode executar a aplicação de duas formas:
 
-Inicializar [virtual environments](https://docs.python.org/3/library/venv.html).
+- [Execução local com Python](#execução-local-com-python)
+- [Execução com Docker](#execução-com-docker)
 
-Instalar dependências:
+### Execução Local com Python
 
-```
-(env)$ pip install -r requirements.txt
-```
+Inicie primeiro a API [puc_rio-mvp_1-back_end](https://github.com/Leandr0SmS/puc_rio-mvp_1-back_end)
 
-Executar o app com o comando:
+1. Certifique-se de que o [Python 3.8+](https://www.python.org/) está instalado no sistema.
+2. Crie um ambiente virtual isolado:
 
-```
-(env)$ flask run --host 0.0.0.0 --port 5001
-```
+3. Criar e ativar um ambiente virtual:
 
-### Replit:
+   ```bash
+   python -m venv env
+   source env/bin/activate  # Linux/macOS
+   .\env\Scripts\activate   # Windows
 
-[[Run on Replit: https://replit.com/@Leandr0SmS/pucrio-mvp1-backend?v=1]](https://replit.com/@Leandr0SmS/pucrio-mvp1-backend?v=1)
+4. Instalar dependências:
 
-### Executar com Docker
+   ```bash
+   (env)$ pip install -r requirements.txt
 
-É importante executar a API meu canteiro para configurar a rede.
+5. Executar a aplicação Flask:
 
-Certifique-se de ter o [Docker](https://docs.docker.com/engine/install/) instalado e em execução em sua máquina.
+   ```bash
+   (env)$ flask run --host 0.0.0.0 --port 5001
 
-Navegue até o diretório que contém o Dockerfile e o requirements.txt no terminal.
+A API estará disponível em: [http://localhost:5001](http://localhost:5001)
 
-Execute **como administrador** o seguinte comando para construir a imagem Docker:
-```
-$ docker build -t agroforestry_systems_design .
-```
+### Execução com Docker
 
-Uma vez criada a imagem, para executar o container basta executar, **como administrador**, seguinte o comando:
-```
-docker run --name agroforestry_systems_design --network my_network -p 5001:5001 agroforestry_systems_design
-```
+1. Verifique se o [Docker Engine](https://docs.docker.com/engine/) está instalado e em execução.
 
-Uma vez executando, para acessar a API, basta abrir o [http://localhost:5001/#/](http://localhost:5001/#/) no navegador.
+2. No diretório do projeto, execute o comando abaixo para construir a imagem Docker:
 
-### Alguns comandos úteis do Docker
+   ```Docker CLI
+   docker build -t agroforestry_systems_design .
 
->**Para verificar se a imagem foi criada** você pode executar o seguinte comando:
->
->```
->$ docker images
->```
->
-> Caso queira **remover uma imagem**, basta executar o comando:
->```
->$ docker rmi <IMAGE ID>
->```
->Subistituindo o `IMAGE ID` pelo código da imagem
->
-> Caso queira **remover todas as images**, basta executar o comando:
->```
->$ docker rmi -f $(docker images -aq)
->```
->
->**Para verificar se o container está em exceução** você pode executar o seguinte comando:
->
->```
->$ docker container ls --all
->```
->
-> Caso queira **parar um conatiner**, basta executar o comando:
->```
->$ docker stop <CONTAINER ID>
->```
->Subistituindo o `CONTAINER ID` pelo ID do conatiner
->
-> Caso queira **parar todos os conatiner**, basta executar o comando:
->```
->$ docker stop $(docker ps -a -q)
->```
->
-> Caso queira **destruir um conatiner**, basta executar o comando:
->```
->$ docker rm <CONTAINER ID>
->```
-> Caso queira **destruir todos os conatiners**, basta executar o comando:
->```
->$ docker rm $(docker ps -a -q)
->```
->Para mais comandos, veja a [documentação do docker](https://docs.docker.com/engine/reference/run/).
 
-> **Banco de Dados** - Será iniciado e carregado com informações pré definidas.
+3. Execute o container (certifique-se de que a rede `my_network` já existe ou a crie):
+
+   ```Docker CLI
+   docker run --name agroforestry_systems_design --network my_network -p 5001:5001 agroforestry_systems_design
+
+
+>[documentação do docker](https://docs.docker.com/engine/reference/run/).
 
 ## Autor
 
@@ -108,7 +67,7 @@ Uma vez executando, para acessar a API, basta abrir o [http://localhost:5001/#/]
 ## Licença
 
 The MIT License (MIT)
-Copyright © 2023 Leandro Simões
+Copyright © 2025 Leandro Simões
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -123,4 +82,3 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 - [FreeCodeCamp](https://www.freecodecamp.org/learn/)
 - [Cepeas](https://www.cepeas.org/)
 - [Agenda Gotsch](https://agendagotsch.com/)
-
