@@ -2,6 +2,10 @@
 
 Projeto para o desenvolvimento de sistemas agroflorestais (SAFs), que realiza o planejamento automatizado de canteiros a partir das espécies fornecidas, respeitando critérios de luminosidade, estratificação e espaçamento entre plantas.
 
+## Arquitetura
+
+![Arquitetura Meu Canteiro SAF](https://github.com/Leandr0SmS/mvp_canteiroSAF_frontend/blob/main/resources/images/Meu_canteiro_Flowchart.png)
+
 ## Funcionalidades
 
 A API oferece recursos para o gerenciamento e organização de canteiros agroflorestais. Entre as principais funcionalidades:
