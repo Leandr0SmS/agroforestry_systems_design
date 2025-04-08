@@ -13,3 +13,4 @@ SQLAlchemy-Utils
 plotly
 logger
 numpy
+pydantic

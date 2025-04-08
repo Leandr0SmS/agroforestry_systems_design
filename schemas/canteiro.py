@@ -83,10 +83,16 @@ class CanteiroSchema(BaseModel):
     #}
     
 class CanteiroBuscaSchema(BaseModel):
-    """ Define como deve ser a estrutura que representa a busca. Que será
+    """ Define como deve ser a estrutura que representa a busca por nome. Que será
         feita apenas com base no nome do Canteiro.
     """
     nome_canteiro: str = "Canteiro1"
+
+class BuscaCanteiroIdSchema(BaseModel):
+    """ Define como deve ser a estrutura que representa a busca por id. Que será
+        feita apenas com base no nome do Canteiro.
+    """
+    id_canteiro: int = 1
 
 
 class CanteiroViewSchema(BaseModel):
