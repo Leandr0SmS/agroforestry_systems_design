@@ -40,7 +40,7 @@ class PlantasCanteiroSchema(BaseModel):
               "sombra": 80,
               "tempo_colheita": 730
             }
-        ]# Explicitly validate the list structure
+        ]
 
 class CanteiroSchema(BaseModel):
     """ Define como um novo canteiro deve ser representado
@@ -49,38 +49,6 @@ class CanteiroSchema(BaseModel):
     x_canteiro: int = 800
     y_canteiro: int = 200
     plantas_canteiro: PlantasCanteiroSchema  
-    #dict = {
-    #    "plantas": [
-    #        {
-    #          "espacamento": 200,
-    #          "estrato": "emergente",
-    #          "nome_planta": "Embaúba",
-    #          "sombra": 20,
-    #          "tempo_colheita": 1095
-    #        },
-    #        {
-    #          "espacamento": 100,
-    #          "estrato": "alto",
-    #          "nome_planta": "Jucara",
-    #          "sombra": 40,
-    #          "tempo_colheita": 2555
-    #        },
-    #        {
-    #          "espacamento": 50,
-    #          "estrato": "medio",
-    #          "nome_planta": "Pimenta-do-reino",
-    #          "sombra": 60,
-    #          "tempo_colheita": 1460
-    #        },
-    #        {
-    #          "espacamento": 40,
-    #          "estrato": "baixo",
-    #          "nome_planta": "Abacaxi",
-    #          "sombra": 80,
-    #          "tempo_colheita": 730
-    #        }
-    #    ]
-    #}
     
 class CanteiroBuscaSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca por nome. Que será
