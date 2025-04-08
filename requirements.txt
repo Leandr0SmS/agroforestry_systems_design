@@ -6,10 +6,7 @@ flask-openapi3-redoc
 flask-openapi3-rapidoc
 flask-openapi3-rapipdf
 flask-openapi3-scalar
-flask-openapi3-elements
 flask_cors
 SQLAlchemy
 SQLAlchemy-Utils
-plotly
 logger
-numpy

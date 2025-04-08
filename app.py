@@ -1,4 +1,4 @@
-from flask import redirect, jsonify, request
+from flask import redirect, jsonify
 from flask_openapi3 import OpenAPI, Info, Tag
 from flask_cors import CORS
 from logger import logger
