@@ -42,7 +42,7 @@ def popula_canteiros():
 
     canteiros_iniciais = [
         Canteiro(
-            nome_canteiro="Canteiro_test_1",
+            nome_canteiro="Canteiro1",
             x_canteiro=1100,
             y_canteiro=250,
             plantas_canteiro={
@@ -79,7 +79,7 @@ def popula_canteiros():
             }
         ),
         Canteiro(
-            nome_canteiro="Canteiro_test_2",
+            nome_canteiro="Canteiro2",
             x_canteiro=800,
             y_canteiro=300,
             plantas_canteiro={
