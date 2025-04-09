@@ -22,8 +22,6 @@ Você pode executar a aplicação de duas formas:
 
 ### Execução Local com Python
 
->Inicie primeiro a API [puc_rio-mvp_1-back_end](https://github.com/Leandr0SmS/puc_rio-mvp_1-back_end)
-
 1. Certifique-se de que o [Python 3.8+](https://www.python.org/) está instalado no sistema.
 2. Crie um ambiente virtual isolado:
 
@@ -47,6 +45,8 @@ Você pode executar a aplicação de duas formas:
 A API estará disponível em: [http://localhost:5001](http://localhost:5001)
 
 ### Execução com Docker
+
+>Inicie primeiro a API [puc_rio-mvp_1-back_end](https://github.com/Leandr0SmS/puc_rio-mvp_1-back_end)
 
 1. Verifique se o [Docker Engine](https://docs.docker.com/engine/) está instalado e em execução.
 
