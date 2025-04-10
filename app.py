@@ -1,4 +1,4 @@
-from flask import redirect, jsonify
+from flask import redirect, jsonify,request
 from flask_openapi3 import OpenAPI, Info, Tag
 from flask_cors import CORS
 from logger import logger
@@ -102,16 +102,14 @@ def buscar_canteiro_por_id(query: BuscaCanteiroIdSchema):
     
 @app.post('/canteiro', tags=[canteiro_tag],
           responses={"200": CanteiroUpdateSchema, "409": ErrorSchema, "400": ErrorSchema})
-def add_canteiro(form: CanteiroUpdateSchema):
-    """Edita um novo canteiro à base de dados
-
-    Retorna uma representação do canteiro.
-    """
-    nome_canteiro = unquote(unquote(form.nome_canteiro))
-    logger.debug(f"Editando dados sobre canteiro #{nome_canteiro}")
+def add_canteiro(body: CanteiroUpdateSchema):
+    """Edita um canteiro à base de dados"""
     
+    nome_canteiro = body.nome_canteiro
+
+    logger.debug(f"Editando dados sobre canteiro #{nome_canteiro}")
+
     with Session() as session:
-        # Buscando canteiro
         canteiro_to_updt = session.query(Canteiro).filter(Canteiro.nome_canteiro == nome_canteiro).first()
         
         if not canteiro_to_updt:
@@ -119,18 +117,18 @@ def add_canteiro(form: CanteiroUpdateSchema):
             logger.warning(f"Erro ao editar canteiro #'{nome_canteiro}', {error_msg}")
             return {"message": error_msg}, 404
         
-        # Editando atributos
-        if form.x_canteiro is not None:
-            canteiro_to_updt.x_canteiro = form.x_canteiro
-        if form.y_canteiro is not None:
-            canteiro_to_updt.y_canteiro = form.y_canteiro
-        if form.plantas_canteiro is not None:
-            canteiro_to_updt.plantas_canteiro = form.plantas_canteiro
-        
+        if body.x_canteiro is not None:
+            canteiro_to_updt.x_canteiro = body.x_canteiro
+        if body.y_canteiro is not None:
+            canteiro_to_updt.y_canteiro = body.y_canteiro
+        if body.plantas_canteiro is not None:
+            canteiro_to_updt.plantas_canteiro = body.plantas_canteiro
+
         session.commit()
-        
+
         logger.debug(f"Editado canteiro #{nome_canteiro}")
-        return {"message": "Canteiro atualizada", "nome_canteiro": nome_canteiro}
+        return {"message": "Canteiro atualizado", "nome_canteiro": nome_canteiro}
+
 
 @app.get('/canteiros', tags=[canteiro_tag],
          responses={"200": ListagemCanteirosSchema, "404": ErrorSchema})
