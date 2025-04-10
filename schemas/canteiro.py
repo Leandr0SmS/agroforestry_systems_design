@@ -49,6 +49,85 @@ class CanteiroSchema(BaseModel):
     x_canteiro: int = 800
     y_canteiro: int = 200
     plantas_canteiro: PlantasCanteiroSchema  
+
+
+class CanteiroSchemaDestribuido(BaseModel):
+    """ Define como um novo canteiro deve ser representado
+    """
+    nome_canteiro: str = "Canteiro1"
+    x_canteiro: int = 800
+    y_canteiro: int = 200
+    plantas_canteiro: PlantasCanteiroSchema
+    plantas_destribuidas: dict = {
+    "alto": [
+      {
+        "diametro": 100,
+        "estrato": "alto",
+        "nome_planta": "Jucara",
+        "posicao": [
+          114,
+          100
+        ],
+        "tempo_colheita": 2555
+      },
+      {
+        "diametro": 100,
+        "estrato": "alto",
+        "nome_planta": "Jucara",
+        "posicao": [
+          228,
+          100
+        ],
+        "tempo_colheita": 2555
+      }
+    ],
+    "baixo": [
+      {
+        "diametro": 40,
+        "estrato": "baixo",
+        "nome_planta": "Abacaxi",
+        "posicao": [
+          47,
+          33
+        ],
+        "tempo_colheita": 730
+      },
+      {
+        "diametro": 40,
+        "estrato": "baixo",
+        "nome_planta": "Abacaxi",
+        "posicao": [
+          94,
+          33
+        ],
+        "tempo_colheita": 730
+      }
+    ],
+    "emergente": [],
+    "medio": [
+      {
+        "diametro": 50,
+        "estrato": "medio",
+        "nome_planta": "Pimenta-do-reino",
+        "posicao": [
+          58,
+          50
+        ],
+        "tempo_colheita": 1460
+      },
+      {
+        "diametro": 50,
+        "estrato": "medio",
+        "nome_planta": "Pimenta-do-reino",
+        "posicao": [
+          116,
+          50
+        ],
+        "tempo_colheita": 1460
+      }
+    ]
+  }
+
     
 class CanteiroBuscaSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca por nome. Que será
@@ -132,6 +211,18 @@ def apresenta_canteiro(canteiro: Canteiro):
         "x_canteiro": canteiro.x_canteiro,
         "y_canteiro": canteiro.y_canteiro,
         "plantas_canteiro": canteiro.plantas_canteiro
+    }
+
+def apresenta_canteiro_destribuido(canteiro: Canteiro):
+    """ Retorna uma representação de um canteiro seguindo o schema definido em
+        CanteiroViewSchema.
+    """
+    return {
+        "nome_canteiro": canteiro.nome_canteiro,
+        "x_canteiro": canteiro.x_canteiro,
+        "y_canteiro": canteiro.y_canteiro,
+        "plantas_canteiro": canteiro.plantas_canteiro,
+        "plantas_destribuidas": canteiro.plantas_canteiro_destribuidas
     }
 
 def apresenta_canteiros(canteiros: List[Canteiro]):

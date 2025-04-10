@@ -11,8 +11,6 @@ from sqlalchemy.orm import Session
 from model import Session, Canteiro
 from schemas import *
 
-from pydantic import ValidationError
-
 
 info = Info(title="Agroforestry Systems Design", version="1.0.0")
 app = OpenAPI(__name__, info=info)
@@ -31,11 +29,12 @@ def home():
     return redirect('/openapi')
     
 @app.put('/canteiro', tags=[canteiro_tag],
-         responses={"200": CanteiroSchema, "404": ErrorSchema})
+         responses={"200": CanteiroSchemaDestribuido, "404": ErrorSchema})
 def put_canteiro(body: CanteiroSchema):
     """
     Adiciona um canteiro a base e distribui a plantas
-    Retorna uma representação do Canteiro e as plantas destribuidas.
+
+    Retorna uma representação do Canteiro com as plantas destribuidas.
     """
     logger.debug(f"Criando Canteiro")
     
@@ -70,7 +69,7 @@ def put_canteiro(body: CanteiroSchema):
         # Destribuindo plantas pela area do canteiro
         logger.debug(f"Destribuindo plantas no canteiro: '{canteiro.nome_canteiro}'")
         canteiro.distribuir_plantas()
-        return apresenta_canteiro(canteiro), 200
+        return apresenta_canteiro_destribuido(canteiro), 200
     
     except Exception as e:
         # caso um erro fora do previsto
@@ -81,7 +80,8 @@ def put_canteiro(body: CanteiroSchema):
             "status": "failed"
         }), 500
     
-@app.get('/canteiro', tags=[canteiro_tag])
+@app.get('/canteiro', tags=[canteiro_tag],
+         responses={"200": CanteiroSchema, "404": ErrorSchema})
 def buscar_canteiro_por_id(query: BuscaCanteiroIdSchema):
     """
     Retorna os dados de um canteiro pelo ID, incluindo as plantas (sem IDs).
@@ -94,14 +94,11 @@ def buscar_canteiro_por_id(query: BuscaCanteiroIdSchema):
             error_msg = "Canteiro não encontrada na base :/"
             logger.warning(f"Erro ao editar canteiro #'{query.id_canteiro}', {error_msg}")
             return {"message": error_msg}, 404
+        
+        # Destribuindo plantas pela area do canteiro
+        logger.debug(f"Destribuindo plantas no canteiro: '{canteiro.nome_canteiro}'")
 
-        return {
-            "id_canteiro": canteiro.id_canteiro,
-            "nome_canteiro": canteiro.nome_canteiro,
-            "x_canteiro": canteiro.x_canteiro,
-            "y_canteiro": canteiro.y_canteiro,
-            "plantas_canteiro": canteiro.plantas_canteiro  # JSON direto
-        }
+        return apresenta_canteiro(canteiro), 200
     
 @app.post('/canteiro', tags=[canteiro_tag],
           responses={"200": CanteiroUpdateSchema, "409": ErrorSchema, "400": ErrorSchema})
@@ -134,28 +131,7 @@ def add_canteiro(form: CanteiroUpdateSchema):
         
         logger.debug(f"Editado canteiro #{nome_canteiro}")
         return {"message": "Canteiro atualizada", "nome_canteiro": nome_canteiro}
-    
-#@app.get('/canteiros', tags=[canteiro_tag],
-#         responses={"200": ListagemCanteirosSchema, "404": ErrorSchema})
-#def get_canteiros():
-#    """Faz a busca por todos canteiros cadastrados
-#
-#    Retorna uma representação da listagem deos canteiros.
-#    """
-#    logger.debug(f"Coletando canteiros ")
-#    # criando conexão com a base
-#    with Session() as session:
-#        # fazendo a busca
-#        canteiros = session.query(Canteiro).all()
-#        session.commit()
-#
-#        if not canteiros:
-#            # se não há canteiros cadastrados
-#            return {"canteiros": []}, 200
-#        else:
-#            logger.debug(f"{len(canteiros)} canteiros econtrados")
-#            # retorna a representação de planta
-#            return apresenta_canteiros(canteiros), 200
+
 @app.get('/canteiros', tags=[canteiro_tag],
          responses={"200": ListagemCanteirosSchema, "404": ErrorSchema})
 def get_canteiros():

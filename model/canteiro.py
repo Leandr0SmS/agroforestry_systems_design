@@ -2,7 +2,6 @@ from sqlalchemy import Column, String, Integer, JSON
 
 from  model import Base
 
-
 class Canteiro(Base):
     __tablename__ = 'canteiros'
 
@@ -14,6 +13,7 @@ class Canteiro(Base):
 
     def __init__(self, nome_canteiro:str, x_canteiro:int, y_canteiro:int, plantas_canteiro:dict):
         """
+
         Cria um Canteiro
 
         Parametros:
@@ -97,7 +97,7 @@ class Canteiro(Base):
                     x += espacamento_x
                 y += espacamento_y
     
-        self.plantas_canteiro = canteiro
+        self.plantas_canteiro_destribuidas = canteiro
         
     def __repr__(self):
         return f'Canteiro("{self.nome_canteiro}","{self.plantas_canteiro}")'
