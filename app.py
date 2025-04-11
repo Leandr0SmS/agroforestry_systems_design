@@ -102,7 +102,7 @@ def buscar_canteiro_por_id(query: BuscaCanteiroIdSchema):
     
 @app.post('/canteiro', tags=[canteiro_tag],
           responses={"200": CanteiroUpdateSchema, "409": ErrorSchema, "400": ErrorSchema})
-def add_canteiro(body: CanteiroUpdateSchema):
+def edit_canteiro(body: CanteiroUpdateSchema):
     """Edita um canteiro à base de dados"""
     
     nome_canteiro = body.nome_canteiro
@@ -122,7 +122,11 @@ def add_canteiro(body: CanteiroUpdateSchema):
         if body.y_canteiro is not None:
             canteiro_to_updt.y_canteiro = body.y_canteiro
         if body.plantas_canteiro is not None:
-            canteiro_to_updt.plantas_canteiro = body.plantas_canteiro
+            # Garante que seja serializável para salvar como JSON
+            if isinstance(body.plantas_canteiro, PlantasCanteiroSchema):
+                canteiro_to_updt.plantas_canteiro = body.plantas_canteiro.model_dump()
+            else:
+                canteiro_to_updt.plantas_canteiro = body.plantas_canteiro
 
         session.commit()
 

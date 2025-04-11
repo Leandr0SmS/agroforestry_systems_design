@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, List
 from model.canteiro import Canteiro
 
@@ -11,36 +11,36 @@ class PlantaSchema(BaseModel):
     tempo_colheita: int
 
 class PlantasCanteiroSchema(BaseModel):
-    plantas: List[PlantaSchema] =  [
-            {
-              "espacamento": 200,
-              "estrato": "emergente",
-              "nome_planta": "Embaúba",
-              "sombra": 20,
-              "tempo_colheita": 1095
-            },
-            {
-              "espacamento": 100,
-              "estrato": "alto",
-              "nome_planta": "Jucara",
-              "sombra": 40,
-              "tempo_colheita": 2555
-            },
-            {
-              "espacamento": 50,
-              "estrato": "medio",
-              "nome_planta": "Pimenta-do-reino",
-              "sombra": 60,
-              "tempo_colheita": 1460
-            },
-            {
-              "espacamento": 40,
-              "estrato": "baixo",
-              "nome_planta": "Abacaxi",
-              "sombra": 80,
-              "tempo_colheita": 730
-            }
-        ]
+    plantas: List[PlantaSchema] = Field(default_factory=lambda: [
+        PlantaSchema(
+          espacamento=200,
+          estrato="emergente",
+          nome_planta="Embaúba",
+          sombra=20,
+          tempo_colheita=1095
+          ),
+        PlantaSchema(
+          espacamento=100,
+          estrato="alto",
+          nome_planta="Jucara",
+          sombra=40,
+          tempo_colheita=2555
+          ),
+        PlantaSchema(
+          espacamento=50,
+          estrato="medio",
+          nome_planta="Pimenta-do-reino",
+          sombra=60,
+          tempo_colheita=1460
+          ),
+        PlantaSchema(
+          espacamento=40,
+          estrato="baixo",
+          nome_planta="Abacaxi",
+          sombra=80,
+          tempo_colheita=730
+          )
+    ])
 
 class CanteiroSchema(BaseModel):
     """ Define como um novo canteiro deve ser representado
