@@ -81,24 +81,26 @@ def put_canteiro(body: CanteiroSchema):
         }), 500
     
 @app.get('/canteiro', tags=[canteiro_tag],
-         responses={"200": CanteiroSchema, "404": ErrorSchema})
-def buscar_canteiro_por_id(query: BuscaCanteiroIdSchema):
+         responses={"200": CanteiroSchemaDestribuido, "404": ErrorSchema})
+def buscar_canteiro_por_nome(query: CanteiroBuscaSchema):
     """
-    Retorna os dados de um canteiro pelo ID, incluindo as plantas (sem IDs).
-    Exemplo: /canteiro?id_canteiro=1
+    Retorna os dados de um canteiro pelo nome, incluindo as plantas (sem IDs).
+    Exemplo: /canteiro?nome_canteiro=Canteiro1
     """
+    nome = unquote(unquote(query.nome_canteiro))
+
     with Session() as session:
-        canteiro = session.query(Canteiro).filter(Canteiro.id_canteiro == query.id_canteiro).first()
+        canteiro = session.query(Canteiro).filter(Canteiro.nome_canteiro == nome).first()
         
         if not canteiro:
-            error_msg = "Canteiro não encontrada na base :/"
-            logger.warning(f"Erro ao editar canteiro #'{query.id_canteiro}', {error_msg}")
+            error_msg = "Canteiro não encontrado na base :/"
+            logger.warning(f"Erro ao buscar canteiro '{nome}', {error_msg}")
             return {"message": error_msg}, 404
         
-        # Destribuindo plantas pela area do canteiro
-        logger.debug(f"Destribuindo plantas no canteiro: '{canteiro.nome_canteiro}'")
+        logger.debug(f"Destribuindo plantas no canteiro: '{nome}'")
 
-        return apresenta_canteiro(canteiro), 200
+        canteiro.distribuir_plantas()
+        return apresenta_canteiro_destribuido(canteiro), 200
     
 @app.post('/canteiro', tags=[canteiro_tag],
           responses={"200": CanteiroUpdateSchema, "409": ErrorSchema, "400": ErrorSchema})
