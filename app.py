@@ -81,7 +81,7 @@ def put_canteiro(body: CanteiroSchema):
         }), 500
     
 @app.get('/canteiro', tags=[canteiro_tag],
-         responses={"200": CanteiroSchema, "404": ErrorSchema})
+         responses={"200": CanteiroSchemaDestribuido, "404": ErrorSchema})
 def buscar_canteiro_por_id(query: BuscaCanteiroIdSchema):
     """
     Retorna os dados de um canteiro pelo ID, incluindo as plantas (sem IDs).
@@ -98,7 +98,8 @@ def buscar_canteiro_por_id(query: BuscaCanteiroIdSchema):
         # Destribuindo plantas pela area do canteiro
         logger.debug(f"Destribuindo plantas no canteiro: '{canteiro.nome_canteiro}'")
 
-        return apresenta_canteiro(canteiro), 200
+        canteiro.distribuir_plantas()
+        return apresenta_canteiro_destribuido(canteiro), 200
     
 @app.post('/canteiro', tags=[canteiro_tag],
           responses={"200": CanteiroUpdateSchema, "409": ErrorSchema, "400": ErrorSchema})
