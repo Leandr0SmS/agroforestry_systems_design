@@ -6,6 +6,10 @@ Projeto para o desenvolvimento de sistemas agroflorestais (SAFs), que realiza o 
 
 ![Arquitetura Meu Canteiro SAF](https://github.com/Leandr0SmS/mvp_canteiroSAF_frontend/blob/main/resources/images/Meu_canteiro_Flowchart.png)
 
+- Meu Canteiro Front: [https://github.com/Leandr0SmS/mvp_canteiroSAF_frontend](https://github.com/Leandr0SmS/mvp_canteiroSAF_frontend)
+- Meu Canteiro API: [https://github.com/Leandr0SmS/mvp_canteiroSAF_API](https://github.com/Leandr0SmS/mvp_canteiroSAF_API)
+- Agroforestry Systems Design API: [https://github.com/Leandr0SmS/agroforestry_systems_design](https://github.com/Leandr0SmS/agroforestry_systems_design)
+
 ## Funcionalidades
 
 A API oferece recursos para o gerenciamento e organização de canteiros agroflorestais. Entre as principais funcionalidades:
