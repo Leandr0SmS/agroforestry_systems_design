@@ -23,7 +23,7 @@ canteiro_tag = Tag(name="Plot", description="Visualização do Canteiro")
 @app.get('/', tags=[home_tag])
 def home():
     """
-    Redireciona para /openapi, 
+    Redireciona para /openapi,
     tela que permite a escolha do estilo de documentação. 
     """
     return redirect('/openapi')
@@ -84,8 +84,9 @@ def put_canteiro(body: CanteiroSchema):
          responses={"200": CanteiroSchemaDestribuido, "404": ErrorSchema})
 def buscar_canteiro(query: CanteiroBuscaSchema):
     """
-    Retorna os dados de um canteiro pelo nome, incluindo as plantas destribuidas.
-    Exemplo: /canteiro?nome_canteiro=Canteiro1
+    Busca canteiro apartir do nome.
+    
+    Retorna os dados de um canteiro, incluindo as plantas destribuidas.
     """
     nome = unquote(unquote(query.nome_canteiro))
 
@@ -105,7 +106,9 @@ def buscar_canteiro(query: CanteiroBuscaSchema):
 @app.post('/canteiro', tags=[canteiro_tag],
           responses={"200": CanteiroUpdateSchema, "409": ErrorSchema, "400": ErrorSchema})
 def edit_canteiro(body: CanteiroUpdateSchema):
-    """Edita um canteiro à base de dados"""
+    """Busca canteiro apartir do nome e edita suas informções na base de dados
+    
+    Retorna confirmação da edição"""
     
     nome_canteiro = body.nome_canteiro
 
@@ -139,7 +142,9 @@ def edit_canteiro(body: CanteiroUpdateSchema):
 @app.get('/canteiros', tags=[canteiro_tag],
          responses={"200": ListagemCanteirosSchema, "404": ErrorSchema})
 def get_canteiros():
-    """Busca por todos canteiros cadastrados."""
+    """Busca por todos canteiros cadastrados.
+    
+    Retorna um lista de todos os canteiros"""
     logger.debug("Coletando canteiros")
     try:
         with Session() as session:
@@ -156,7 +161,7 @@ def get_canteiros():
 @app.delete('/canteiro', tags=[canteiro_tag],
             responses={"200": CanteiroDelSchema, "404": ErrorSchema})
 def del_canteiro(query: CanteiroBuscaSchema):
-    """Deleta um Canteiro a partir do nome da canteiro informada
+    """Deleta um Canteiro a partir do nome da canteiro informado
 
     Retorna uma mensagem de confirmação da remoção.
     """
