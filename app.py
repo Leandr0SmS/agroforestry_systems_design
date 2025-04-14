@@ -82,9 +82,9 @@ def put_canteiro(body: CanteiroSchema):
     
 @app.get('/canteiro', tags=[canteiro_tag],
          responses={"200": CanteiroSchemaDestribuido, "404": ErrorSchema})
-def buscar_canteiro_por_id(query: BuscaCanteiroIdSchema):
+def buscar_canteiro(query: CanteiroBuscaSchema):
     """
-    Retorna os dados de um canteiro pelo nome, incluindo as plantas (sem IDs).
+    Retorna os dados de um canteiro pelo nome, incluindo as plantas destribuidas.
     Exemplo: /canteiro?nome_canteiro=Canteiro1
     """
     nome = unquote(unquote(query.nome_canteiro))
